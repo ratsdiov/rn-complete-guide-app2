@@ -32,8 +32,8 @@ const StartGameScreen = props => {
         const chosenNumber = parseInt(enteredValue);
         if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
             Alert.alert(
-                'Invalid Number!', 
-                'Number has to be a number between 1 and 99.', 
+                'Invalid Number!',
+                'Number has to be a number between 1 and 99.',
                 [{ text: 'Okay', style: 'destructive', onPress: resetInputHandler }]);
             return;
         }
@@ -45,7 +45,15 @@ const StartGameScreen = props => {
     let confirmedOutput;
 
     if (confirmed) {
-        confirmedOutput = <Text>Chosen Number: {selectedNumber}</Text>;
+        confirmedOutput =
+            <Card style={styles.output}>
+                <Text>You Selected</Text>
+                <View style={styles.summaryContainer}>
+                    {confirmedOutput}
+                </View>
+                <Button title="Start Game" />
+            </Card>;
+
     }
 
     return (
@@ -112,7 +120,23 @@ const styles = StyleSheet.create({
     input: {
         width: 50,
         textAlign: 'center'
+    },
+    output: {
+        alignItems: 'center',
+        width: 200,
+        height: 200,
+        marginTop: 20,
+    },
+    summaryContainer: {
+        marginTop: 20,
+        borderWidth: 2,
+        borderColor: Colors.accent,
+        borderRadius: 5,
+        padding: 20,
+
+        marginBottom: 20,
     }
+
 
 
 });
