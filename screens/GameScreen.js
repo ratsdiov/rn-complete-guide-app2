@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 
 import NumberContainer from '../components/NumberContainer';
@@ -18,8 +18,17 @@ const generateRandomBetween = (min, max, exclude) => {
 
 const GameScreen = props => {
     const [currentGuess, setCurrentGuess] = useState(generateRandomBetween(1, 100, props.userChoice));
+    const [rounds, setRounds] = useState(0);
     const currentLow = useRef(1);       // Create persistent values across renders that when changed do not cause a rerender
     const currentHigh = useRef(100);
+
+    const { userChoice, onGameOver } = props;
+
+    useEffect(() => { // This useEffect function will be called after a render cycle if currentGuess is changed
+        if (currentGuess === userChoice) {
+            onGameOver(rounds);
+        }
+    }, [currentGuess, userChoice, onGameOver]); 
 
     const nextGuessHandler = direction => {
         if (
@@ -36,6 +45,7 @@ const GameScreen = props => {
         }
         const nextNumber = generateRandomBetween(currentLow.current, currentHigh.current, currentGuess);
         setCurrentGuess(nextNumber);
+        setRounds(curRounds => curRounds + 1);
     };
 
     return (
