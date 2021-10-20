@@ -12,7 +12,9 @@ const GameOverScreen = props => {
             <TitleText>The Game Is Over</TitleText>
             <View style={styles.imageContainer}>
                 <Image
-                    source={require('../assets/success.png')}
+                    // source={require('../assets/success.png')}
+                    // Network image test - note this does not display in the android x86 emulator
+                    source={{uri:'https://cdn.pixabay.com/photo/2016/05/05/23/52/mountain-summit-1375015_960_720.jpg'}}
                     style={styles.image}
                     resizeMode="cover"  // Note cover is the default
                 />
