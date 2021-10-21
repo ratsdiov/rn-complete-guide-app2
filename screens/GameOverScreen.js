@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Button, Image, StyleSheet } from 'react-native';
+import { View, Button, Image, StyleSheet, Text } from 'react-native';
 
 import Card from '../components/Card';
 import BodyText from '../components/BodyText';
 import TitleText from '../components/BodyText';
+import Colors from '../constants/colors';
 
 
 const GameOverScreen = props => {
@@ -12,15 +13,19 @@ const GameOverScreen = props => {
             <TitleText>The Game Is Over</TitleText>
             <View style={styles.imageContainer}>
                 <Image
-                    // source={require('../assets/success.png')}
+                    source={require('../assets/success.png')}
                     // Network image test - note this does not display in the android x86 emulator
-                    source={{uri:'https://cdn.pixabay.com/photo/2016/05/05/23/52/mountain-summit-1375015_960_720.jpg'}}
+                    // source={{uri:'https://cdn.pixabay.com/photo/2016/05/05/23/52/mountain-summit-1375015_960_720.jpg'}}
                     style={styles.image}
                     resizeMode="cover"  // Note cover is the default
                 />
             </View>
-            <BodyText>Number of rounds: {props.roundsNumber}</BodyText>
-            <BodyText>Number was: {props.userNumber}</BodyText>
+            <View style={styles.resultContainer}>
+                <BodyText style={styles.resultText}>
+                    Your phone needed <Text style={styles.highlight}>{props.roundsNumber}</Text> rounds to guess the
+                    number <Text style={styles.highlight}>{props.userNumber}</Text>.
+                </BodyText>
+            </View>
             <Button title="NEW GAME" onPress={props.onRestart} />
         </View>
     );
@@ -44,6 +49,18 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
+    },
+    resultContainer: {
+        marginHorizontal: 30,
+        marginVertical: 20,
+    },
+    resultText: {
+        textAlign: 'center',
+
+    },
+    highlight: {
+        color: Colors.primary,
+        fontFamily: 'open-sans-bold',
     }
 
 });
