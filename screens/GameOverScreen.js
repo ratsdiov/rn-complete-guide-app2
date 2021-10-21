@@ -4,6 +4,7 @@ import { View, Button, Image, StyleSheet, Text } from 'react-native';
 import Card from '../components/Card';
 import BodyText from '../components/BodyText';
 import TitleText from '../components/BodyText';
+import MainButton from '../components/MainButton';
 import Colors from '../constants/colors';
 
 
@@ -26,7 +27,7 @@ const GameOverScreen = props => {
                     number <Text style={styles.highlight}>{props.userNumber}</Text>.
                 </BodyText>
             </View>
-            <Button title="NEW GAME" onPress={props.onRestart} />
+            <MainButton onPress={props.onRestart}>NEW GAME</MainButton>
         </View>
     );
 };
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     },
     resultText: {
         textAlign: 'center',
-
+        fontSize: 20,
     },
     highlight: {
         color: Colors.primary,
