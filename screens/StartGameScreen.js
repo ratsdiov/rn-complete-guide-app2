@@ -41,7 +41,7 @@ const StartGameScreen = props => {
     // because they would never be removed.
     useEffect(() => {
         const updateLayout = () => {
-            Dimensions.get('window').width / 4;
+            setButtonWidth(Dimensions.get('window').width / 4);
         };
     
         Dimensions.addEventListener('change', updateLayout);
