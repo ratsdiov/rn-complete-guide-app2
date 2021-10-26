@@ -42,12 +42,12 @@ const GameScreen = props => {
             setAvailableDeviceWidth(Dimensions.get('window').width);
             setAvailableDeviceHeight(Dimensions.get('window').height);
         };
-    
+
         Dimensions.addEventListener('change', updateLayout);
         return () => {
             Dimensions.removeEventListener('change', updateLayout);
-        }
-    })
+        };
+    });
 
     useEffect(() => { // This useEffect function will be called after a render cycle if currentGuess is changed
         if (currentGuess === userChoice) {
@@ -79,10 +79,23 @@ const GameScreen = props => {
         listContainerStyle = styles.listContainerBig;
     }
 
+    let gameControls = (
+        <React.Fragment>
+            <NumberContainer>{currentGuess}</NumberContainer>
+            <Card style={{...styles.buttonContainer, borderWidth:2, borderColor: 'red', marginTop: availableDeviceHeight > 600 ? 20 : 5 }}>
+                <MainButton onPress={nextGuessHandler.bind(this, 'lower')}>
+                    <Ionicons name="md-remove" size={24} color="white" />
+                </MainButton>
+                <MainButton onPress={nextGuessHandler.bind(this, 'greater')}>
+                    <Ionicons name="md-add" size={24} color="white" />
+                </MainButton>
+            </Card>
+        </React.Fragment>
+    );
+
     if (availableDeviceHeight < 500) {
-        return (
-            <View style={styles.screen}>
-                <Text style={DefaultStyles.title}>Opponent's Guess</Text>
+        gameControls = (
+            <React.Fragment>
                 <View style={styles.controls}>
                     <MainButton onPress={nextGuessHandler.bind(this, 'lower')}>
                         <Ionicons name="md-remove" size={24} color="white" />
@@ -92,32 +105,14 @@ const GameScreen = props => {
                         <Ionicons name="md-add" size={24} color="white" />
                     </MainButton>
                 </View>
-                <View style={listContainerStyle}>
-                    {/* <ScrollView contentContainerStyle={styles.list}>
-                        {pastGuesses.map((guess, index) => renderList(guess, pastGuesses.length - index))}
-                        </ScrollView> */ }
-                    <FlatList
-                        keyExtractor={(item) => item}
-                        data={pastGuesses}
-                        renderItem={renderListItem.bind(this, pastGuesses.length)}
-                        contentContainerStyle={styles.list}
-                    />
-                </View>
-            </View>
+            </React.Fragment>
         );
     }
+    
     return (
         <View style={styles.screen}>
             <Text style={DefaultStyles.title}>Opponent's Guess</Text>
-            <NumberContainer>{currentGuess}</NumberContainer>
-            <Card style={styles.buttonContainer}>
-                <MainButton onPress={nextGuessHandler.bind(this, 'lower')}>
-                    <Ionicons name="md-remove" size={24} color="white" />
-                </MainButton>
-                <MainButton onPress={nextGuessHandler.bind(this, 'greater')}>
-                    <Ionicons name="md-add" size={24} color="white" />
-                </MainButton>
-            </Card>
+            {gameControls}
             <View style={listContainerStyle}>
                 {/* <ScrollView contentContainerStyle={styles.list}>
                     {pastGuesses.map((guess, index) => renderList(guess, pastGuesses.length - index))}
@@ -143,7 +138,6 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: Dimensions.get('window').height > 600 ? 20 : 5,
         width: 400,
         maxWidth: '90%'
     },

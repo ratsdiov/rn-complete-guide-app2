@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Button,
@@ -17,11 +17,35 @@ import Colors from '../constants/colors';
 
 
 const GameOverScreen = props => {
+
+    const [availableDeviceWidth, setAvailableDeviceWidth] = useState(Dimensions.get('window').width);
+    const [availableDeviceHeight, setAvailableDeviceHeight] = useState(Dimensions.get('window').height);
+
+    useEffect(() => {
+        const updateLayout = () => {
+            setAvailableDeviceWidth(Dimensions.get('window').width);
+            setAvailableDeviceHeight(Dimensions.get('window').height);
+        };
+
+        Dimensions.addEventListener('change', updateLayout);
+
+        return () => {
+            Dimensions.removeEventListener('change', updateLayout);
+        };
+    });
+
     return (
         <ScrollView>
             <View style={styles.screen}>
                 <TitleText>The Game Is Over!</TitleText>
-                <View style={styles.imageContainer}>
+                <View style={{
+                    ...styles.imageContainer, 
+                        width: availableDeviceWidth * 0.7,
+                        height: availableDeviceWidth * 0.7,  // Using width to force equal dimensions
+                        borderRadius: availableDeviceWidth * 0.7 / 2, // half of width and height to force a circle
+                        marginVertical: availableDeviceHeight / 20,
+                    
+                }}>
                     <Image
                         source={require('../assets/success.png')}
                         // Network image test - note this does not display in the android x86 emulator
@@ -30,15 +54,15 @@ const GameOverScreen = props => {
                         resizeMode="cover"  // Note cover is the default
                     />
                 </View>
-                <View style={styles.resultContainer}>
-                    <BodyText style={styles.resultText}>
+                <View style={{ ...styles.resultContainer, marginVertical: availableDeviceHeight / 40  }}>
+                    <BodyText style={{ ...styles.resultText, fontSize: availableDeviceHeight < 400 ? 16 : 20  }} >
                         Your phone needed <Text style={styles.highlight}>{props.roundsNumber}</Text> rounds to guess the
                         number <Text style={styles.highlight}>{props.userNumber}</Text>.
                     </BodyText>
                 </View>
                 <MainButton onPress={props.onRestart}>NEW GAME</MainButton>
             </View>
-        </ScrollView>
+        </ScrollView >
     );
 };
 
@@ -50,13 +74,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     imageContainer: {
-        width: Dimensions.get('window').width * 0.7,
-        height: Dimensions.get('window').width * 0.7,  // Using width to force equal dimensions
-        borderRadius: Dimensions.get('window').width * 0.7 / 2, // half of width and height to force a circle
         borderWidth: 3,
         borderColor: 'black',
         overflow: 'hidden',
-        marginVertical: Dimensions.get('window').height / 20,
     },
     image: {
         width: '100%',
@@ -64,11 +84,9 @@ const styles = StyleSheet.create({
     },
     resultContainer: {
         marginHorizontal: 30,
-        marginVertical: Dimensions.get('window').height / 40,
     },
     resultText: {
         textAlign: 'center',
-        fontSize: Dimensions.get('window').height < 400 ? 16 : 20,
     },
     highlight: {
         color: Colors.primary,
