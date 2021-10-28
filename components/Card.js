@@ -1,8 +1,15 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 
 const Card = props => {
-    return <View style={{...styles.card, ...props.style}}>{props.children}</View>;
+    let style;
+    if (Array.isArray(props.style)) {
+        style = [styles.card, ...props.style];
+    } else {
+        style = { ...styles.card, ...props.style };
+    }
+    return <View style={style}>{props.children}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -16,7 +23,13 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 10
     },
-
 });
+
+Card.propTypes = {
+    style: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array
+    ])
+};
 
 export default Card;

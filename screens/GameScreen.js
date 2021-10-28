@@ -82,7 +82,9 @@ const GameScreen = props => {
     let gameControls = (
         <React.Fragment>
             <NumberContainer>{currentGuess}</NumberContainer>
-            <Card style={{...styles.buttonContainer, marginTop: availableDeviceHeight > 600 ? 20 : 5 }}>
+            <Card style={[styles.buttonContainer, { marginTop: availableDeviceHeight > 600 ? 20 : 5 }]}>
+                { /* Passing as objects, had to modify the Card component to accept the array syntax above
+                 <Card style={{...styles.buttonContainer, borderWidth:2, borderColor: 'red', marginTop: availableDeviceHeight > 600 ? 20 : 5 }}> */}
                 <MainButton onPress={nextGuessHandler.bind(this, 'lower')}>
                     <Ionicons name="md-remove" size={24} color="white" />
                 </MainButton>
@@ -108,7 +110,7 @@ const GameScreen = props => {
             </React.Fragment>
         );
     }
-    
+
     return (
         <View style={styles.screen}>
             <Text style={DefaultStyles.title}>Opponent's Guess</Text>
@@ -134,7 +136,10 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center'
     },
-
+    redBorder: {
+        borderWidth: 2,
+        borderColor: 'red',
+    },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
